@@ -1,22 +1,25 @@
 $("document").ready(function() {
-
-  $("li").each(function(i) {
-    console.log(i);
-  });
-
-
-  $("li").click(function(){ 
-
-    $("#content").html( "<p>new content !!!</p>" );
-
-    $("#btn-valide").remove();
-    $(this).fadeOut().delay(5000).fadeIn();
-
-  });
   
+  console.log('load ok');
+
+  $( function() {
+    $( ".list-group" ).sortable({
+
+      update: function( event, ui ) {
+        
+        var newSort = JSON.stringify($( ".list-group" ).sortable( "toArray" ));
+        
+        $.get("./updatesort?sort="+newSort, function(data) {
+          console.log($( ".list-group-item" ));
+          $( ".list-group-item" ).each(function( i ) {
+            $( this ).attr("id", i);
+          });
+        });
+      }
   
-  $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Lyon&APPID=9b754f1f40051783e4f72c176953866e&units=metric&lang=fr", function(data) {
-    console.log(data);
-  });
+      
+    });
+    $( ".list-group" ).disableSelection();
+  } );
   
 })

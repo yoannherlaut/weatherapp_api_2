@@ -11,9 +11,26 @@ app.get('/', function (req, res) {
   res.render('index', {cityList : cityList});
 });
 
+app.get('/updatesort', function (req, res) {
+  
+  console.log(req.query.sort);
+  var sort = JSON.parse(req.query.sort);
+  
+  var cityListTmp = [];
+  for(var i=0; i<sort.length; i++) {
+    var position = sort[i];
+    console.log(cityList[position].name);
+    cityListTmp.push(cityList[position]);
+  }
+  cityList = cityListTmp;
+  
+  res.render('index', {cityList : cityList});
+});
+
 app.get('/add', function (req, res) {
     request("http://api.openweathermap.org/data/2.5/weather?q="+req.query.city+"&APPID=9b754f1f40051783e4f72c176953866e&units=metric&lang=fr", function(error, response, body) {
       body = JSON.parse(body);
+      console.log(body);
       cityList.push(body);
       res.render('index', {cityList : cityList});
     });

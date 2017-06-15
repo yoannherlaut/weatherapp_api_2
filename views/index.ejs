@@ -4,8 +4,15 @@
   <meta charset="utf-8">
   
   <title>Weather App</title>
-  <script src="./jquery.js"></script>
-
+  <script
+  src="https://code.jquery.com/jquery-1.12.4.js"
+  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+  crossorigin="anonymous"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+  crossorigin="anonymous"></script>
+  
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -15,6 +22,8 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
+  
+  <script src="./script.js"></script>
 </head>
 <body>
 
@@ -39,11 +48,11 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-        <ul class="list-group">
+        <ul id="city" class="list-group">
           <%
           for(var i=0; i<cityList.length ; i++) {
           %>
-            <li class="list-group-item"><span class="city"><%= cityList[i].name %></span> <img class="logo-meteo" src="http://openweathermap.org/img/w/<%=cityList[i].weather[0].icon%>.png"> <span class="desc"><%= cityList[i].weather[0].description %></span> <span class="label label-warning"><%= cityList[i].main.temp_max %> °C</span> <span class="label label-default"><%= cityList[i].main.temp_min %> °C</span> <a href="./delete?position=<%=i%>"><span class="glyphicon glyphicon-remove-circle"></span></a></li>
+            <li id="<%=i%>" class="list-group-item"><span class="city"><%= cityList[i].name %></span> <img class="logo-meteo" src="http://openweathermap.org/img/w/<%=cityList[i].weather[0].icon%>.png"> <span class="desc"><%= cityList[i].weather[0].description %></span> <span class="label label-warning"><%= cityList[i].main.temp_max %> °C</span> <span class="label label-default"><%= cityList[i].main.temp_min %> °C</span> <a href="./delete?position=<%=i%>"><span class="glyphicon glyphicon-remove-circle"></span></a></li>
           <%
           }
           %>
@@ -52,6 +61,5 @@
     </div>
   </div>
  
-
 </body>
 </html>
