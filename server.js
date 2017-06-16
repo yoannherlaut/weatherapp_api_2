@@ -1,5 +1,20 @@
-var express = require('express');
-var request = require('request');
+var express  = require('express');
+var request  = require('request');
+var mongoose = require('mongoose');
+
+var options = { server: { socketOptions: {connectTimeoutMS: 30000 } }};
+mongoose.connect('mongodb://noel:keepcool@ds041563.mlab.com:41563/weatherapp',options, function(err) {
+  console.log('mongoose connect ok');
+});
+
+var citySchema = mongoose.Schema({
+    name: String,
+    icon: String,
+    description: String,
+    temp_max: String,
+    temp_min: String
+});
+var CityModel = mongoose.model('City', citySchema);
 
 var app = express();
 app.use(express.static('public'));
@@ -32,7 +47,18 @@ app.get('/add', function (req, res) {
       body = JSON.parse(body);
       console.log(body);
       cityList.push(body);
-      res.render('index', {cityList : cityList});
+      
+      var city = new CityModel ({
+        name: body.name,
+        icon: body.weather[0].icon,
+        description: body.weather[0].description,
+        temp_max: body.main.temp_max,
+        temp_min: body.main.temp_min
+      });
+      city.save(function (error, city) {
+        res.render('index', {cityList : cityList});
+      });
+     
     });
     
 });
