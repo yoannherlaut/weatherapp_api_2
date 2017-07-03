@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  
+
   <title>Weather App</title>
   <script
   src="https://code.jquery.com/jquery-1.12.4.js"
@@ -12,7 +12,13 @@
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
   integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
   crossorigin="anonymous"></script>
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+  integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+  integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+  crossorigin=""></script>
+
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -22,7 +28,7 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
-  
+
   <script src="./script.js"></script>
 </head>
 <body>
@@ -30,21 +36,20 @@
   <div class="container sectionCity">
     <div class="row">
       <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-        
+
         <form action="./add" class="form-inline">
           <div class="form-group">
             <label for="city">Ville</label>
             <input type="text" class="form-control" name="city" id="city" placeholder="Lyon, Paris ...">
-          </div> 
+          </div>
           <button type="submit" id="btn-valide" class="btn btn-warning">Enregistrer</button>
         </form>
-        
+
       </div>
     </div>
   </div>
-  <div id="content">
-    
-  </div>
+  <div id="content"></div>
+
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-offset-2 col-sm-8">
@@ -52,14 +57,15 @@
           <%
           for(var i=0; i<cityList.length ; i++) {
           %>
-            <li id="<%=i%>" class="list-group-item"><span class="city"><%= cityList[i].name %></span> <img class="logo-meteo" src="http://openweathermap.org/img/w/<%=cityList[i].icon%>.png"> <span class="desc"><%= cityList[i].description %></span> <span class="label label-warning"><%= cityList[i].temp_max %> °C</span> <span class="label label-default"><%= cityList[i].temp_min %> °C</span> <a href="./delete?id=<%= cityList[i].id %>"><span class="glyphicon glyphicon-remove-circle"></span></a></li>
+            <li  lat="<%= cityList[i].lat %>" lon="<%= cityList[i].lon %>"  id="<%=i%>" class="list-group-item"> <span class="lon" hidden><%= cityList[i].lon %></span><span class="city"><%= cityList[i].name %></span><img class="logo-meteo" src="http://openweathermap.org/img/w/<%=cityList[i].icon%>.png"> <span class="desc"><%= cityList[i].description %></span> <span class="label label-warning"><%= cityList[i].temp_max %> °C</span> <span class="label label-default"><%= cityList[i].temp_min %> °C</span> <span class="glyphicon glyphicon-remove-circle"><a href="./delete?id=<%= cityList[i].id %>"></a></span></li>
           <%
           }
           %>
         </ul>
       </div>
+      <div id="mapid"></div>
     </div>
   </div>
- 
+
 </body>
 </html>

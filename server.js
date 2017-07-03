@@ -3,7 +3,7 @@ var request  = require('request');
 var mongoose = require('mongoose');
 
 var options = { server: { socketOptions: {connectTimeoutMS: 30000 } }};
-mongoose.connect('mongodb://noel:keepcool@ds041563.mlab.com:41563/weatherapp',options, function(err) {
+mongoose.connect('mongodb://yoann:0123456@ds123662.mlab.com:23662/wheaterapp',options, function(err) {
   console.log(err);
 });
 
@@ -13,7 +13,10 @@ var citySchema = mongoose.Schema({
     description: String,
     temp_max: Number,
     temp_min: Number,
-    sort: Number
+    sort: Number,
+    lat: Number,
+    lon: Number
+
 });
 var CityModel = mongoose.model('city', citySchema);
 
@@ -47,21 +50,27 @@ app.get('/updatesort', function (req, res) {
 app.get('/add', function (req, res) {
     request("http://api.openweathermap.org/data/2.5/weather?q="+req.query.city+"&APPID=9b754f1f40051783e4f72c176953866e&units=metric&lang=fr", function(error, response, body) {
       body = JSON.parse(body);
+      var lastSort = 0;
+      if (cityList.length > 0 ) {
+        lastSort = cityList[cityList.length-1].sort+1
+      }
       var city = new CityModel({
         name: body.name,
         icon: body.weather[0].icon,
         description: body.weather[0].description,
         temp_max: body.main.temp_max,
         temp_min: body.main.temp_min,
-        sort : cityList[cityList.length-1].sort+1
+        sort : lastSort,
+        lat: body.coord.lat,
+        lon: body.coord.lon
       });
       city.save(function (error, city) {
         cityList.push(city);
         res.render('index', {cityList : cityList});
       });
-     
+
     });
-    
+
 });
 
 app.get('/delete', function (req, res) {
@@ -70,9 +79,9 @@ app.get('/delete', function (req, res) {
       cityList = cities;
       res.render('index', {cityList : cityList});
     })
-  }); 
+  });
 });
 
-app.listen(80, function () {
-  console.log("Server listening on port 80");
+app.listen(8080, function () {
+  console.log("Server listening on port 8080");
 });
